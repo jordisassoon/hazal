@@ -13,12 +13,6 @@ annotations_keys = {
 }
 
 
-def load_csv(filename: str) -> pd.DataFrame:
-    df = pd.read_csv(filename)
-    df = df.drop(['reg_score'], axis=1)
-    return df.rename(columns={'video_name': 'video_id', 'xmin': 'start', 'xmax': 'end', 'label': 'label', 'clr_score': 'score'})
-
-
 def sanity_check(annotations):
     for video in annotations.values():
         for key in video_keys:
@@ -79,6 +73,10 @@ def load_actionformer(file_path: str) -> pd.DataFrame:
     df['label'] = df['label'].map(lambda x: inv_classes[x])
     return df
 
+def load_teal(file_path: str) -> pd.DataFrame:
+    df = pd.read_csv(file_path)
+    df = df.rename(columns={'video-id': 'video_id', 't-start': 'start', 't-end': 'end'})
+    return df
 
 def convert_to_dataframe(nested_dict: dict) -> pd.DataFrame:
     """

@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (12,8)
+
 import numpy as np
 import pandas as pd
 import seaborn as sns
@@ -21,4 +22,13 @@ def plot_matrix(matrix, title, filepath):
     ax.set_title(title)
     fig.tight_layout()
 
+    plt.savefig(filepath)
+
+def scatter_plot(similarities, confusion, title, filepath):
+    fig, ax = plt.subplots(figsize=(5, 5), layout='constrained')
+    print(similarities)
+    print(confusion)
+    ax.scatter(similarities, confusion)
+    ax.set_xlabel('Similarity')
+    ax.set_ylabel('Class Confusion')
     plt.savefig(filepath)
