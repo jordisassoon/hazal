@@ -78,6 +78,9 @@ def load_teal(file_path: str) -> pd.DataFrame:
     df = df.rename(columns={'video-id': 'video_id', 't-start': 'start', 't-end': 'end'})
     return df
 
+def load_csv(file_path: str) -> pd.DataFrame:
+    return pd.read_csv(file_path)
+
 def convert_to_dataframe(nested_dict: dict) -> pd.DataFrame:
     """
     Convert a nested dictionary into a Pandas DataFrame.

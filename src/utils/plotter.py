@@ -26,8 +26,6 @@ def plot_matrix(matrix, title, filepath):
 
 def scatter_plot(similarities, confusion, title, filepath):
     fig, ax = plt.subplots(figsize=(5, 5), layout='constrained')
-    print(similarities)
-    print(confusion)
     ax.scatter(similarities, confusion)
     ax.set_xlabel('Similarity')
     ax.set_ylabel('Class Confusion')

@@ -36,6 +36,25 @@ class SemanticAnalysis(Diagnoser):
             "plots/scat.png",
         )
 
+    def _analyze(self, confusion_matrix):
+        confusion_matrix.set_index("id", drop=False, inplace=True)
+        confusion_matrix.drop("id", axis=1, inplace=True)
+        confusion_matrix = (confusion_matrix-confusion_matrix.min())/(confusion_matrix.sum()-confusion_matrix.min())
+        plot_matrix(confusion_matrix, "Confusion Matrix", "plots/conf.png")
+
+        classes = self.load_classes()
+        text_embeddings = self.tokenize(classes)
+        similarity_matrix = self.compute_similarity(classes, text_embeddings)
+        similarity_matrix = self.align_matrices(similarity_matrix, confusion_matrix)
+        plot_matrix(similarity_matrix, "Similarity Matrix", "plots/sim.png")
+
+        scatter_plot(
+            similarity_matrix.to_numpy().flatten(),
+            confusion_matrix.to_numpy().flatten(),
+            "Confusion-Similarity Correlation",
+            "plots/scat.png",
+        )
+
     def align_matrices(self, current_matrix, target_matrix):
         return current_matrix[target_matrix.columns].reindex(target_matrix.columns)
 
@@ -81,7 +100,7 @@ class SemanticAnalysis(Diagnoser):
         y_pred = merged["label_y"]
 
         df = pd.DataFrame(
-            confusion_matrix(y_test, y_pred, normalize="pred"),
+            confusion_matrix(y_test, y_pred),
             columns=list(class_map.keys()),
         )
         df["id"] = list(class_map.keys())
